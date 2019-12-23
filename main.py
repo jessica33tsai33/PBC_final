@@ -11,24 +11,11 @@ import pygame, random
 class Vocabulary():
     
     def __init__(self, i):
-        #self.english = []  # 單字英文list
-        #self.chinese = []  # 單字中文list
         self.img = i  # 單字表圖片路徑
         self.voclist = []
-        
-    #def read_eng(self, e):  # 讀入英文單字
-    #    self.english.append(e)
-    
-    #def read_chi(self, c):  # 讀入中文單字
-    #    self.chinese.append(c)
     
     def addVocab(self, v):
         self.voclist.append(v)
-    
-    #def check_voc(self, e):
-    #    for i in self.voclist:
-    #        if i.english == e:
-    #            return i
 
 
 # 單一Vocab物件
@@ -50,19 +37,38 @@ def show_vocabulary(path):
 
 
 # 單字塊下降
-def createMap(word, score):
+def createMap(word, score, textobj, textrect, wrong):
     screen.fill((232, 232, 232))     # 填充顏色
-    #screen.blit(background, (0, 0))  # 填入到背景
     if word.vocrect.top < 0 or word.vocrect.bottom > 650:
         speed[1] = -speed[1]
-    screen.blit(word.vocobj, word.vocrect)  # voc指單字本身，voc_pic指承載單字的底圖方塊
+    if word.vocrect.left < 0 or word.vocrect.right > 1100:
+        speed[0] = -speed[0]
+    screen.blit(word.vocobj, word.vocrect)  
 
     # 顯示分數
     text = 'Score:' + str(score)
     score_show = font.render(text, True, (255, 255, 255))
     screen.blit(score_show, (100, 50))  # 設定顏色及座標位置
+    
+    # 顯示錯誤數
+    wrongtext = 'Wrong:' + str(wrong)
+    wrong_show = font.render(wrongtext, True, (255, 255, 255))
+    screen.blit(wrong_show, (100, 150))  # 設定顏色及座標位置
+    
+    # 顯示打進來的字
+    screen.blit(textobj, textrect)
     pygame.display.update()    # 更新顯示
 
+def get_result(score):
+    final_text1 = "Game Over"
+    final_text2 = "Your final score is: " + str(score)
+    ft1_font = pygame.font.SysFont("OpenSans-Regular", 70) #字型和大小
+    ft1_surf = ft1_font.render(final_text1, True, (0,0,255)) #顯示的東西,去鋸齒,藍色
+    ft2_font = pygame.font.SysFont("OpenSans-Regular", 50)
+    ft2_surf = ft2_font.render(final_text2, True, (0,0,255)) #藍色
+    screen.blit(ft1_surf, [screen.get_width() / 2 - ft1_surf.get_width() / 2, 100]) # x 讓它置中顯示, y 預設100
+    screen.blit(ft2_surf, [screen.get_width() / 2 - ft2_surf.get_width() / 2, 200]) # y 預設200
+    pygame.display.flip() # 更新修改的部分
 
 # 主程式
 if __name__ == '__main__':
@@ -80,8 +86,9 @@ if __name__ == '__main__':
     score = 0  # 分數
     i = 0  # 單字序號
     wrong = 0  # 錯誤次數
-    speed = [0,5]  # 移動速度
-    condition = 1
+    speed = [5,5]  # 移動速度
+    condition = 1  # 第幾個畫面
+    text = ""  # 輸入的單字
     
     r = random.randint(1, 15)
     img = "C:\\Users\\Tsai Jessica\\NTU\\PBC\\Final\\voc\\" + str(r) + ".png"
@@ -92,20 +99,14 @@ if __name__ == '__main__':
     fn = "C:\\Users\\Tsai Jessica\\NTU\\PBC\\Final\\voc\\voc" + str(r) + ".csv"
     file = open(fn, 'r', encoding='utf-8')
     for j in file:
-        #j = j.encode('utf-8').decode('utf-8-sig')
         temp = j.split(',')
-        
-        #voc.read_eng(temp[0])
-        #voc.read_chi(temp[2])
         voc.addVocab(vocabUnit(temp[0], temp[2]))
     file.close()
-    #voc.addVocab(vocabUnit(temp[0], temp[2]))
     
     # 開始遊戲
     running = True
     while running == True:
         clock.tick(60)  # 控制速度
-        
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -114,19 +115,56 @@ if __name__ == '__main__':
             elif event.type == pygame.KEYDOWN:  # 按下鍵
                 if event.key == pygame.K_SPACE:  # 按下空白鍵
                     condition = 2
-                    #creat_map(0, score)  # 第一個單字掉下來
                     screen.blit(background, (0, 0))  # 填入到背景
                     pygame.display.update()
                     i = 0
-                #elif event.key == pygame.K_KP_ENTER:  # 按下 Enter 鍵
-                #    if wrong < 4:
-                #    
-                #    elif wrong == 4:
+                elif event.key == pygame.K_RETURN:  # 按下 Enter 鍵
+                    if wrong < 4:
+                        if i < 9:
+                            if text == voc.voclist[i].english:
+                                i += 1
+                                score += 1
+                            else:
+                                wrong += 1
+                                i += 1
+                        else:
+                            if text == voc.voclist[i].english:
+                                score += 1
+                                condition = 3  # 跳到第三個畫面
+                            else:
+                                condition = 3
+                        
+                    elif wrong == 4:
+                        if i < 9:
+                            if text == voc.voclist[i].english:
+                                score += 1
+                                i += 1
+                            else:
+                                condition = 3
+                        else:
+                            if text == voc.voclist[i].english:
+                                score += 1
+                                condition = 3  # 跳到第三個畫面
+                            else:
+                                condition = 3
+                            
+                    text = ""
+
+                elif event.key == pygame.K_BACKSPACE:
+                    text = text[:-1]
+
+                else:
+                    text += event.unicode
+                    
+        textobj = font.render(text, True, (0,0,255))
+        textrect = textobj.get_rect(centerx = 150, centery=325)
+        
         if condition == 1:
             show_vocabulary(voc.img)  # 顯示單字表畫面
         elif condition == 2:
-            createMap(voc.voclist[i], score)
+            createMap(voc.voclist[i], score, textobj, textrect, wrong)
             voc.voclist[i].vocrect = voc.voclist[i].vocrect.move(speed)
+        elif condition == 3:
+            get_result(score)
         
-    #elif event.key == pygame.K_KP_ENTER:  # 按下 Enter 鍵
     pygame.quit()
