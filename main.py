@@ -59,16 +59,18 @@ def createMap(word, score, textobj, textrect, wrong):
     screen.blit(textobj, textrect)
     pygame.display.update()    # 更新顯示
 
+
 def get_result(score):
     final_text1 = "Game Over"
     final_text2 = "Your final score is: " + str(score)
-    ft1_font = pygame.font.SysFont("OpenSans-Regular", 70) #字型和大小
+    ft1_font = pygame.font.Font("NotoSansCJKtc-Medium.otf", 70) #字型和大小
     ft1_surf = ft1_font.render(final_text1, True, (0,0,255)) #顯示的東西,去鋸齒,藍色
-    ft2_font = pygame.font.SysFont("OpenSans-Regular", 50)
+    ft2_font = pygame.font.Font("NotoSansCJKtc-Medium.otf", 50)
     ft2_surf = ft2_font.render(final_text2, True, (0,0,255)) #藍色
     screen.blit(ft1_surf, [screen.get_width() / 2 - ft1_surf.get_width() / 2, 100]) # x 讓它置中顯示, y 預設100
     screen.blit(ft2_surf, [screen.get_width() / 2 - ft2_surf.get_width() / 2, 200]) # y 預設200
     pygame.display.flip() # 更新修改的部分
+
 
 # 主程式
 if __name__ == '__main__':
@@ -102,6 +104,10 @@ if __name__ == '__main__':
         temp = j.split(',')
         voc.addVocab(vocabUnit(temp[0], temp[2]))
     file.close()
+    print(voc.voclist[0].english)
+    print(len(voc.voclist[0].english))
+    print(voc.voclist[1].english)
+    print(len(voc.voclist[1].english))
     
     # 開始遊戲
     running = True
@@ -118,7 +124,13 @@ if __name__ == '__main__':
                     screen.blit(background, (0, 0))  # 填入到背景
                     pygame.display.update()
                     i = 0
+                    #text = ""
                 elif event.key == pygame.K_RETURN:  # 按下 Enter 鍵
+                    print(voc.voclist[i].english)
+                    print(len(voc.voclist[i].english))
+                    print(text)
+                    print(len(text))
+                    print(text == voc.voclist[i].english)
                     if wrong < 4:
                         if i < 9:
                             if text == voc.voclist[i].english:
