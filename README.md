@@ -14,7 +14,7 @@
 5. 顯示最後得分
 
 ## 程式架構與重要pseudocode
-'''
+'''python
 Class Vocabulary
   設定單字表路徑，並把單字列表上的單字 append 到 voclist 中
 Class vocaUnit
