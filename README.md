@@ -14,7 +14,7 @@
 5. 顯示最後得分
 
 ## 程式架構與重要pseudocode
-'''python
+```python
 Class Vocabulary
   設定單字表路徑，並把單字列表上的單字 append 到 voclist 中
 Class vocaUnit
@@ -26,4 +26,40 @@ def createMap
   畫面顯示分數(score)、錯誤數(wrong)
 def get_result
   設定遊戲結束（錯 5 個單字時遊戲就會提早結束）時背景與顯示成績
-'''
+```
+1. 初始化：字體與大小、視窗大小、時鐘
+2. 變數宣告：分數(score)、單字序號(i)、錯誤次數(wrong)、移動速度(speed)、第幾個畫面(condition)、輸入的單字(text)
+3. 路徑：單字表、單字列表(csv)檔、宣告 class
+4. 遊戲開始：一進入遊戲就顯示單字表 (condition==1 ，跳到show_vocabulary)，使用者背完單字後按下 space 就進入遊戲畫面(condition==2，跳到 createMap)，一開始時單字序號 i = 0，答了一個單字後 i+=1 ，答對 (text=vocalist.english)score+=1 答錯 wrong+=1 ，直到 i=10 或 wrong=5 時遊戲就會結束，(condition==3 ，跳到 get_result)
+5. 主程式
+```
+  初始化、變數宣告、讀入路徑檔案
+  隨機從 1~15 挑一個數字
+  顯示單字表
+  If 按離開鍵：
+    就結束遊戲
+  If 按 space：
+    進入遊戲畫面
+  If 按 enter：
+    If 錯誤小於 4：
+      If 已出現單字數 <10 個：
+        If 打對：
+          分數加一、單字換到下一個、文字清空
+        If 打錯：
+          錯誤分加一、單字換到下一個、文字清空
+      If 已出現單字數是第 10 個：
+        If 打對：
+          分數加一、遊戲結束
+        If 打錯：
+          遊戲結束
+    If 錯誤 = 4：
+      If 已出現單字數 <10 個：
+        If 打對：
+          分數加一、遊戲結束
+        If 打錯：
+          遊戲結束
+  If按 backspace：
+    將文字最後一字刪除
+  If按其他鍵：
+    將輸入的字加到文字裡
+```
