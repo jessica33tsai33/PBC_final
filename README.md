@@ -1,5 +1,8 @@
 # 108-1 商管程式設計期末專案 - 英語詞彙打字遊戲
 
+[![hackmd-github-sync-badge](https://hackmd.io/4n9r7zceSIuWaCke7gShmA/badge)](https://hackmd.io/4n9r7zceSIuWaCke7gShmA)
+
+
 ## 遊戲主題
 對於台灣學生來說，每當要準備多益、托福、雅思時勢必得花費許多心力加強單字能力，但是「背單字」這件事本身對許多人而言，是一件非常枯燥乏味，且令人沒有動力持續下去的事，因此我們組別設計了一款可以幫助使用者背單字的小遊戲將單字和遊戲做結合以期達到增進學生背單字的效果。
 
@@ -30,7 +33,7 @@ def get_result
 1. 初始化：字體與大小、視窗大小、時鐘
 2. 變數宣告：分數(score)、單字序號(i)、錯誤次數(wrong)、移動速度(speed)、第幾個畫面(condition)、輸入的單字(text)
 3. 路徑：單字表、單字列表(csv)檔、宣告 class
-4. 遊戲開始：一進入遊戲就顯示單字表 (condition==1 ，跳到show_vocabulary)，使用者背完單字後按下 space 就進入遊戲畫面(condition==2，跳到 createMap)，一開始時單字序號 i = 0，答了一個單字後 i+=1 ，答對 (text=vocalist.english)score+=1 答錯 wrong+=1 ，直到 i=10 或 wrong=5 時遊戲就會結束，(condition==3 ，跳到 get_result)
+4. 遊戲開始：一進入遊戲就顯示單字表 (if condition=1 ，跳到show_vocabulary)，使用者背完單字後按下 space 就進入遊戲畫面(if condition=2，跳到 createMap)，一開始時單字序號 i = 0，答了一個單字後 i+=1 ，答對 (text=vocalist.english)score+=1 答錯 wrong+=1 ，直到 i=10 或 wrong=5 時遊戲就會結束，(if condition=3 ，跳到 get_result)
 5. 主程式
 ```
   初始化、變數宣告、讀入路徑檔案
@@ -63,3 +66,7 @@ def get_result
   If按其他鍵：
     將輸入的字加到文字裡
 ```
+
+last update：108/12
+
+###### tags: `PBC` `GitHub` `Python` `pygame`
